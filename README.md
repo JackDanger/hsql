@@ -10,7 +10,7 @@ the program executing the SQL can use.
 ## How to use this
 
 Rather than specifying variables and metadata for a set of database
-queries in a .rb or other programming language source file the queries
+queries in a `.rb`,`.py` or other programming language source file the queries
 should be written to a .sql file directly.
 
     # filename: daily_summary.sql
@@ -43,8 +43,16 @@ the queries an environment must be provided.
   "INSERT INTO jackdanger_summaries SELECT * FROM interesting_information;",
   "UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1;"
 ]
->> # You have access to all the data specified in the front matter
->> header, not just the `data` that gets interpolated into the template.
+```
+
+The object returned from `HSQL.parse_file` also provides you access to
+the data specified in the front matter. You can use this to schedule the
+queries, to run them and send failure notices to a list of watchers.
+It's a general-purpose store of data for the query author to configure
+whatever system you use to run ETL queries.
+
+```ruby
+>> file = HSQL.parse_file('./daily_summary.sql', 'development')
 >> file.yaml
 => {
   'owner' => 'jackdanger',
