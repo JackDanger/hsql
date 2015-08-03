@@ -11,6 +11,21 @@ describe HSQL do
   end
   let(:environment) { 'development' }
 
+  describe '.parse_file' do
+    let(:file) do
+      f = Tempfile.new('any-prefix')
+      f.write file_contents
+      f.seek 0
+      f
+    end
+    subject(:parse_file) { HSQL.parse_file(file, environment) }
+
+    it 'sends the file contents to HSQL.parse' do
+      expect(HSQL).to receive(:parse).with(file_contents, environment)
+      parse_file
+    end
+  end
+
   describe '.parse' do
     subject(:parse) { HSQL.parse(file_contents, environment) }
 

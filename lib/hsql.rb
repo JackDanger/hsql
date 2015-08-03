@@ -15,4 +15,8 @@ module HSQL
     raise ArgumentError, "The environment argument is required" unless environment
     File.new(string, environment).parse!
   end
+
+  def self.parse_file(file, environment)
+    parse(file.read, environment)
+  end
 end
