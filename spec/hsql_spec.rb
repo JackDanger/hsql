@@ -3,13 +3,11 @@ require_relative '../lib/hsql'
 
 describe HSQL do
   let(:readme) { File.expand_path('../../README.md', __FILE__) }
-  let(:sql_file_name) { 'well_formed' }
-  let(:sql_file) { File.expand_path("../#{sql_file_name}.sql", __FILE__) }
   # Use the example in the README as the canonical test case.
   let(:file_contents) do
     File.readlines(readme).select do |line|
-      line =~ /^    /
-    end.map { |line| line.sub!(/^    /, '') }.compact.join
+      line =~ /^        /
+    end.map { |line| line.sub!(/^        /, '') }.compact.join
   end
   let(:environment) { 'development' }
 
