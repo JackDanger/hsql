@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "hsql"
   spec.version       = Setl::VERSION
   spec.authors       = ["Jack Danger Canty"]
-  spec.email         = ["gems@6brand.com"]
+  spec.email         = ["gems@jackcanty.com"]
 
   spec.summary       = %q{Store a hash of data with your SQL queries.}
   spec.description   = %q{Write SQL queries in a .sql format and ship them with metadata about how they should be executed}
@@ -19,9 +19,9 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "mustache"
+  spec.add_dependency "mustache", '~> 0'
   spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec"
-  spec.add_development_dependency "pry-byebug"
+  spec.add_development_dependency "rake", '~> 0'
+  spec.add_development_dependency "rspec", '~> 0'
+  spec.add_development_dependency "pry-byebug", '~> 0'
 end
