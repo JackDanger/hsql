@@ -1,8 +1,9 @@
 # HSQL
 
-".SQL ETL" is a library that parses `.sql` files with YAML front matter.
-This allows analysts and other non-developers to write and develop ETLs
-without having to write source code but still giving them the power of
+"Hash (of data) and SQL" is a library that parses `.sql` files with YAML
+[front matter](http://jekyllrb.com/docs/frontmatter/). This allows
+analysts and other non-developers to write and develop ETLs without
+having to write source code but still giving them the power of
 specifying variables to interpolate into the SQL and other metadata that
 the program executing the SQL can use.
 
