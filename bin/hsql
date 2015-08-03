@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+filename, env = ARGV
+
+unless filename && env
+  puts "USAGE: #{__FILE__} some_file.sql environment"
+  puts ''
+  puts '  The environment must be one of the keys of the "data" hash in the YAML header of the .sql file.'
+  puts '  Run "open https://github.com/JackDanger/hsql" for details'
+  exit 1
+end
+
+
+require_relative "../lib/hsql"
+
+begin
+  file = File.new(filename)
+rescue Errno::ENOENT
+  puts "#{filename.inspect}: No such file"
+end
+
+HSQL.parse_file(file, env).queries.each do |query|
+  puts query
+end
