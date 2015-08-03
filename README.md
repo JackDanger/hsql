@@ -30,3 +30,34 @@ should be written to a .sql file directly.
 
 The above is a SQL file and any text editor will allow analysts to use
 code completion and syntax highlighting for their queries.
+
+The `data` hash in the YAML front matter lists a set of variables, by
+environment, that can be interpolated into the SQL queries. To render
+the queries an environment must be provided.
+
+```ruby
+>> file = HSQL.parse_file('./daily_summary.sql', 'development')
+>> file.queries
+=> [
+  "USE some_database;",
+  "INSERT INTO jackdanger_summaries SELECT * FROM interesting_information;",
+  "UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1;"
+]
+>> # You have access to all the data specified in the front matter
+>> header, not just the `data` that gets interpolated into the template.
+>> file.yaml
+=> {
+  'owner' => 'jackdanger',
+  'schedule' => 'hourly',
+  'data' => {
+    'production' => {
+      'output_table' => 'summaries',
+      'update_condition' => nil,
+    },
+    'development' => {
+      'output_table' => 'jackdanger_summaries',
+      'update_condition' => 'WHERE 1 <> 1',
+    },
+  }
+}
+```
