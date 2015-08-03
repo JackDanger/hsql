@@ -1,10 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'setl/version'
+require 'hsql/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "setl"
+  spec.name          = "hsql"
   spec.version       = Setl::VERSION
   spec.authors       = ["Jack Danger Canty"]
   spec.email         = ["jackdanger@squareup.com"]

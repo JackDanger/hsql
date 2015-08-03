@@ -1,7 +1,7 @@
 require 'pry'
-require_relative '../lib/setl/template'
+require_relative '../lib/hsql/template'
 
-RSpec.describe SETL::Template do
+RSpec.describe HSQL::Template do
   let(:input) do
     <<-MUSTACHE
 SELECT * FROM {{{table1}}} WHERE {{{where}}} AND unsafe = "{{escaped_where}}";
@@ -14,7 +14,7 @@ INSERT INTO summary_{{date}} SELECT * from summaries
 ;
 MUSTACHE
   end
-  let(:template) { SETL::Template.new(input) }
+  let(:template) { HSQL::Template.new(input) }
 
   describe '#variable_names' do
     subject(:variable_names) { template.variable_names }

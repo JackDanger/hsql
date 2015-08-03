@@ -1,4 +1,4 @@
-# SETL
+# HSQL
 
 ".SQL ETL" is a library that parses `.sql` files with YAML front matter.
 This allows analysts and other non-developers to write and develop ETLs

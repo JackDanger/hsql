@@ -1,7 +1,7 @@
 require 'pry'
-require_relative '../lib/setl'
+require_relative '../lib/hsql'
 
-describe SETL do
+describe HSQL do
   let(:readme) { File.expand_path('../../README.md', __FILE__) }
   let(:sql_file_name) { 'well_formed' }
   let(:sql_file) { File.expand_path("../#{sql_file_name}.sql", __FILE__) }
@@ -14,7 +14,7 @@ describe SETL do
   let(:environment) { 'development' }
 
   describe '.parse' do
-    subject(:parse) { SETL.parse(file_contents, environment) }
+    subject(:parse) { HSQL.parse(file_contents, environment) }
 
     context 'when using the example from the README' do
       it 'interpolates successfully' do
@@ -50,7 +50,7 @@ SQL
       end
 
       it 'throws an error' do
-        expect { parse }.to raise_error(SETL::FormatError, /The YAML front matter is required/)
+        expect { parse }.to raise_error(HSQL::FormatError, /The YAML front matter is required/)
       end
     end
 
@@ -80,7 +80,7 @@ SELECT * from {{{table}}};
 SQL
       end
       it 'throws an error' do
-        expect { parse }.to raise_error(SETL::FormatError, /"table" is not set in "development" environment/)
+        expect { parse }.to raise_error(HSQL::FormatError, /"table" is not set in "development" environment/)
       end
     end
 

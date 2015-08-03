@@ -1,5 +1,5 @@
 require 'mustache'
-module SETL
+module HSQL
   class Template < Struct.new(:input)
     def variable_names
       extract_variable_names(ast).uniq
