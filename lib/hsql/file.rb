@@ -1,10 +1,11 @@
 # HSQL::File parses the input file and provides reader methods to the hash of
 # YAML data from the front matter section and a list of the queries in the SQL
 # portion.
+require 'yaml'
 module HSQL
   class File < Struct.new(:string, :environment)
     def yaml
-      @yaml ||= YAML.load(@front_matter)
+      @yaml ||= ::YAML.load(@front_matter)
     end
 
     def queries
