@@ -15,17 +15,17 @@ should be written to a .sql file directly.
     # filename: daily_summary.sql
     owner: jackdanger
     schedule: hourly
-    variables:
+    data:
       production:
         output_table: summaries
-        update_condition: 1 = 1
+        update_condition:
       development:
         output_table: jackdanger_summaries
-        update_condition: 1 <> 1
+        update_condition: WHERE 1 <> 1
     ---
     USE some_database;
-    INSERT INTO {{output_table}} SELECT * FROM interesting_information;
-    UPDATE summaries_performed SET complete = 1 {{update_condition}};
+    INSERT INTO {{{output_table}}} SELECT * FROM interesting_information;
+    UPDATE summaries_performed SET complete = 1 {{{update_condition}}};
 
 The above is a SQL file and any text editor will allow analysts to use
 code completion and syntax highlighting for their queries.
