@@ -35,6 +35,19 @@ The `data` hash in the YAML front matter lists a set of variables, by
 environment, that can be interpolated into the SQL queries. To render
 the queries an environment must be provided.
 
+```bash
+$ hsql daily_summary.sql development
+USE some_database;
+INSERT INTO jackdanger_summaries SELECT * FROM interesting_information;
+UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1;
+```
+
+The `hsql` command-line utility allows these SQL source files to be
+easily run in the context of some other application that understands
+when and where to execute the queries.
+
+To access the metadata directly there is a simple programmatic API:
+
 ```ruby
 >> file = HSQL.parse_file('./daily_summary.sql', 'development')
 >> file.queries
@@ -45,11 +58,11 @@ the queries an environment must be provided.
 ]
 ```
 
-The object returned from `HSQL.parse_file` also provides you access to
-the data specified in the front matter. You can use this to schedule the
-queries, to run them and send failure notices to a list of watchers.
-It's a general-purpose store of data for the query author to configure
-whatever system you use to run ETL queries.
+The object returned from `HSQL.parse_file` provides you access to both
+the rendered queries and the data specified in the front matter. You can
+use this to schedule the queries, to run them and send failure notices
+to a list of watchers. It's a general-purpose store of data for the
+query author to configure whatever system you use to run ETL queries.
 
 ```ruby
 >> file = HSQL.parse_file('./daily_summary.sql', 'development')
