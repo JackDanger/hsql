@@ -1,5 +1,4 @@
-require 'pry'
-require_relative '../lib/hsql/template'
+require_relative '../../lib/hsql/template'
 
 RSpec.describe HSQL::Template do
   let(:input) do

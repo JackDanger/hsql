@@ -1,17 +1,19 @@
+require 'pg_query'
 module HSQL
   class Query < Struct.new(:ast)
     # Returns a list of queries found in the source SQL
     def self.parse(source)
       # Splits on semicolons at the end of the line, eliding any comment that
       # might be there.
-      # TODO: update sql-parser to parse the actual whole set of queries and
-      # return multiple parsed objects.
-      source.split(/;\ *$| -- .*$/).map { |sql| new(SQLPArser::Parser.parse(sql)) }
+      PgQuery.parse(source).parsetree.map do |ast|
+        Query.new(ast)
+      end
     end
 
-    # Show the parsed query as SQL
+    # Show the parsed query as reconstructed SQL
     def to_s
-      ast.to_sql
+      PgQuery.deparse ast
     end
+    alias_method :to_sql, :to_s
   end
 end
