@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "mustache", '> 0'
-  spec.add_dependency "sql-parser", '> 0'
+#  spec.add_dependency 'pg_query', '>= 0.6.2'
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", '> 0'
   spec.add_development_dependency "rspec", '~> 3.3'
