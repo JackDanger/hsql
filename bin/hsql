@@ -13,8 +13,7 @@ unless filename && env
   exit 1
 end
 
-
-require_relative "../lib/hsql"
+require_relative '../lib/hsql'
 
 begin
   file = File.new(filename)

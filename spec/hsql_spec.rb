@@ -37,17 +37,17 @@ describe HSQL do
           'data' => {
             'production' => {
               'output_table' => 'summaries',
-              'update_condition' => nil,
+              'update_condition' => nil
             },
             'development' => {
               'output_table' => 'jackdanger_summaries',
-              'update_condition' => 'WHERE 1 <> 1',
-            },
+              'update_condition' => 'WHERE 1 <> 1'
+            }
           }
         )
         expect(parse.queries.map(&:to_s)).to eql([
-          "INSERT INTO jackdanger_summaries SELECT * FROM interesting_information",
-          "UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1",
+          'INSERT INTO jackdanger_summaries SELECT * FROM interesting_information',
+          'UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1'
         ])
       end
     end
@@ -69,7 +69,7 @@ SQL
       let(:environment) {}
 
       it 'throws an error' do
-        expect { parse }.to raise_error(ArgumentError, "The environment argument is required")
+        expect { parse }.to raise_error(ArgumentError, 'The environment argument is required')
       end
     end
 

@@ -25,7 +25,7 @@ module HSQL
       @split ||= begin
         @front_matter, divider, @sql = string.partition(/^---$/)
         unless divider == '---'
-          raise FormatError, "The YAML front matter is required, otherwise this is just a SQL file"
+          fail FormatError, 'The YAML front matter is required, otherwise this is just a SQL file'
         end
         true
       end
@@ -35,7 +35,7 @@ module HSQL
       @data ||= begin
         if yaml['data']
           unless yaml['data'].key?(environment)
-            raise ArgumentError, "The environment #{environment.inspect} is not specified"
+            fail ArgumentError, "The environment #{environment.inspect} is not specified"
           end
           yaml['data'][environment]
         end || {}
@@ -46,7 +46,7 @@ module HSQL
       template = Template.new(@sql)
       template.variable_names.each do |name|
         unless data.key?(name)
-          raise FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
+          fail FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
         end
       end
 

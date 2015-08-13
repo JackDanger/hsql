@@ -26,21 +26,23 @@ MUSTACHE
   end
 
   describe '#render' do
-    let(:data) {{
-      table1: 'the_table',
-      where: 'name = "The Pope"',
-      escaped_where: '"<unsafe; DROP TABLE bobby;>"',
-      array_of_data: [
-        {
-          condition: true,
-          date: '20220205',
-        },
-        {
-          condition: true,
-          date: '20220206',
-        },
-      ],
-    }}
+    let(:data) do
+      {
+        table1: 'the_table',
+        where: 'name = "The Pope"',
+        escaped_where: '"<unsafe; DROP TABLE bobby;>"',
+        array_of_data: [
+          {
+            condition: true,
+            date: '20220205'
+          },
+          {
+            condition: true,
+            date: '20220206'
+          }
+        ]
+      }
+    end
     subject(:render) { template.render(data) }
 
     it 'interpolates everything properly' do

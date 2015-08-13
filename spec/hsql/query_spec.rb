@@ -2,16 +2,16 @@ require_relative '../../lib/hsql/query'
 
 RSpec.describe HSQL::Query do
   let(:first_query) do
-    "INSERT INTO table_a (a, b) SELECT * FROM table_b"
+    'INSERT INTO table_a (a, b) SELECT * FROM table_b'
   end
   let(:sql) do
-    """
+    ''"
     #{first_query};
     SELECT COUNT(*) FROM users; -- extra comment
     UPDATE factories -- comment inlined inside query
       SET x = y -- second comment
       WHERE a = b;
-    """
+    "''
   end
 
   describe '.parse' do
@@ -20,9 +20,9 @@ RSpec.describe HSQL::Query do
     it 'properly understands the queries' do
       expect(parse.map(&:to_s)).to eql(
         [
-        "INSERT INTO table_a (a, b) SELECT * FROM table_b",
-        "SELECT count(*) FROM users",
-        "UPDATE factories SET x = y WHERE a = b",
+          'INSERT INTO table_a (a, b) SELECT * FROM table_b',
+          'SELECT count(*) FROM users',
+          'UPDATE factories SET x = y WHERE a = b'
         ]
       )
     end
@@ -46,7 +46,7 @@ RSpec.describe HSQL::Query do
     it 'looks like an abstract syntax tree of a query' do
       expect(ast.keys).to eq(['INSERT INTO'])
       expect(ast.values.map(&:keys)).to eq([
-        %W(relation cols selectStmt returningList withClause)
+        %w(relation cols selectStmt returningList withClause)
       ])
     end
   end

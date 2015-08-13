@@ -1,7 +1,7 @@
-require_relative "hsql/version"
-require_relative "hsql/template"
-require_relative "hsql/file"
-require_relative "hsql/query"
+require_relative 'hsql/version'
+require_relative 'hsql/template'
+require_relative 'hsql/file'
+require_relative 'hsql/query'
 require 'mustache'
 
 module HSQL
@@ -13,7 +13,7 @@ module HSQL
   # example) this will return a HSQL::File object providing access to the parts
   # of that file.
   def self.parse(string, environment)
-    raise ArgumentError, "The environment argument is required" unless environment
+    fail ArgumentError, 'The environment argument is required' unless environment
     File.new(string, environment).parse!
   end
 
