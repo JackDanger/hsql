@@ -3,10 +3,13 @@
 filename, env = ARGV
 
 unless filename && env
-  puts "USAGE: #{__FILE__} some_file.sql environment"
+  puts "USAGE: #{__FILE__} file environment"
   puts ''
-  puts '  The environment must be one of the keys of the "data" hash in the YAML header of the .sql file.'
-  puts '  Run "open https://github.com/JackDanger/hsql" for details'
+  puts 'file:        any *.sql file that has a YAML header ending in three hyphens.'
+  puts 'environment: Must be one of the keys of the "data" hash in the YAML header of the .sql file.'
+  puts ''
+  puts 'for details, run:'
+  puts '  open https://github.com/JackDanger/hsql'
   exit 1
 end
 
