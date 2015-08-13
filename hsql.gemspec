@@ -5,7 +5,7 @@ require 'hsql/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "hsql"
-  spec.version       = Setl::VERSION
+  spec.version       = HSQL::VERSION
   spec.authors       = ["Jack Danger Canty"]
   spec.email         = ["gems@jackcanty.com"]
 
