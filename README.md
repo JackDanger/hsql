@@ -24,7 +24,6 @@ should be written to a .sql file directly.
             output_table: jackdanger_summaries
             update_condition: WHERE 1 <> 1
         ---
-        USE some_database;
         INSERT INTO {{{output_table}}} SELECT * FROM interesting_information;
         UPDATE summaries_performed SET complete = 1 {{{update_condition}}};
 

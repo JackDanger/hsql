@@ -2,6 +2,7 @@
 # YAML data from the front matter section and a list of the queries in the SQL
 # portion.
 require 'yaml'
+require_relative 'query'
 module HSQL
   class File < Struct.new(:string, :environment)
     def yaml
@@ -9,8 +10,7 @@ module HSQL
     end
 
     def queries
-      # TODO: allow multi-line queries!
-      @queries ||= @rendered_sql.lines.map(&:chomp).reject(&:empty?)
+      @queries ||= Query.parse(@rendered_sql)
     end
 
     def parse!

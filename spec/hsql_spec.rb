@@ -45,10 +45,9 @@ describe HSQL do
             },
           }
         )
-        expect(parse.queries).to eql([
-          "USE some_database;",
-          "INSERT INTO jackdanger_summaries SELECT * FROM interesting_information;",
-          "UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1;",
+        expect(parse.queries.map(&:to_s)).to eql([
+          "INSERT INTO jackdanger_summaries SELECT * FROM interesting_information",
+          "UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1",
         ])
       end
     end
@@ -56,7 +55,6 @@ describe HSQL do
     context 'when the front matter is missing' do
       let(:file_contents) do
         <<-SQL
-USE some_database;
 INSERT INTO {{{output_table}}} SELECT * FROM interesting_information;
 UPDATE summaries_performed SET complete = 1 {{{update_condition}}};
 SQL
@@ -88,7 +86,6 @@ data:
   test:
     table: mine
 ---
-USE some_database;
 SELECT * from {{{table}}};
 SQL
       end
@@ -100,14 +97,14 @@ SQL
     context 'for the development environment' do
       let(:environment) { 'development' }
       it 'interpolates development variables' do
-        expect(parse.queries.join).to match(/INSERT INTO jackdanger_summaries/)
+        expect(parse.queries.map(&:to_s).join).to match(/INSERT INTO jackdanger_summaries/)
       end
     end
 
     context 'for the production environment' do
       let(:environment) { 'production' }
       it 'interpolates production variables' do
-        expect(parse.queries.join).to match(/INSERT INTO summaries/)
+        expect(parse.queries.map(&:to_s).join).to match(/INSERT INTO summaries/)
       end
     end
   end

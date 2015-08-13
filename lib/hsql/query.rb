@@ -1,3 +1,4 @@
+# PgQuery uses Postgres' own parser to parse and then deparse each query.
 require 'pg_query'
 module HSQL
   class Query < Struct.new(:ast)

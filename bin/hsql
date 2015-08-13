@@ -20,5 +20,6 @@ rescue Errno::ENOENT
 end
 
 HSQL.parse_file(file, env).queries.each do |query|
+  # Runs the query through the parser and then deparses it
   puts query
 end
