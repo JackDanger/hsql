@@ -5,8 +5,8 @@ require 'yaml'
 require_relative 'query'
 module HSQL
   class File < Struct.new(:string, :environment)
-    def yaml
-      @yaml ||= ::YAML.load(@front_matter)
+    def metadata
+      @metadata ||= ::YAML.load(@front_matter)
     end
 
     def queries
@@ -33,11 +33,11 @@ module HSQL
 
     def data
       @data ||= begin
-        if yaml['data']
-          unless yaml['data'].key?(environment)
+        if metadata['data']
+          unless metadata['data'].key?(environment)
             fail ArgumentError, "The environment #{environment.inspect} is not specified"
           end
-          yaml['data'][environment]
+          metadata['data'][environment]
         end || {}
       end
     end

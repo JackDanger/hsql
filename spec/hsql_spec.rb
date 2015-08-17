@@ -31,7 +31,7 @@ describe HSQL do
 
     context 'when using the example from the README' do
       it 'interpolates successfully' do
-        expect(parse.yaml).to eql(
+        expect(parse.metadata).to eql(
           'owner' => 'jackdanger',
           'schedule' => 'hourly',
           'data' => {

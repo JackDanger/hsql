@@ -1,27 +1,56 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
+require 'yaml'
+require 'json'
+
+options = {}
+option_parser = OptionParser.new do |opts|
+  opts.banner = <<-BANNER
+USAGE: #{__FILE__} file environment [--yaml]
+
+file:        Any *.sql file that has a YAML header ending in three hyphens.
+environment: Must be one of the keys of the "data" hash in the YAML header of the .sql file.
+--yaml:      Outputs only the YAML metadata from the file, not the SQL queries themselves.
+
+for details, run:
+  open https://github.com/JackDanger/hsql
+BANNER
+
+  opts.on('-y', '--yaml', 'Output metadata for this file as YAML') do |option|
+    options[:meta_only] = 'yaml'
+  end
+  opts.on('-j', '--json', 'Output metadata for this file as JSON') do |option|
+    options[:meta_only] = 'json'
+  end
+end
+
+option_parser.parse!
+
 filename, env = ARGV
 
 unless filename && env
-  puts "USAGE: #{__FILE__} file environment"
-  puts ''
-  puts 'file:        any *.sql file that has a YAML header ending in three hyphens.'
-  puts 'environment: Must be one of the keys of the "data" hash in the YAML header of the .sql file.'
-  puts ''
-  puts 'for details, run:'
-  puts '  open https://github.com/JackDanger/hsql'
+  puts option_parser.banner
   exit 1
 end
-
-require_relative '../lib/hsql'
 
 begin
   file = File.new(filename)
 rescue Errno::ENOENT
   puts "#{filename.inspect}: No such file"
+  exit 1
 end
 
-HSQL.parse_file(file, env).queries.each do |query|
-  # Runs the query through the parser and then deparses it
-  puts query
+require_relative '../lib/hsql'
+
+file = HSQL.parse_file(file, env)
+if 'yaml' == options[:meta_only]
+  puts file.metadata.to_yaml
+elsif 'json' == options[:meta_only]
+  puts file.metadata.to_json
+else
+  file.queries.each do |query|
+    # Runs the query through the parser and then deparses it
+    puts query
+  end
 end
