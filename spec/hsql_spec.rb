@@ -1,4 +1,3 @@
-require 'pry'
 require_relative '../lib/hsql'
 
 describe HSQL do
