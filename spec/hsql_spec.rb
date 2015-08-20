@@ -63,7 +63,7 @@ describe HSQL do
       let(:environment) {}
 
       it 'throws an error' do
-        expect { parse }.to raise_error(ArgumentError, 'The environment argument is required')
+        expect { parse }.to raise_error(HSQL::FormatError, /"output_table" is not set! Did you provide the right environment argument?/)
       end
     end
 

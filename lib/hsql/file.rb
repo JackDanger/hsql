@@ -37,7 +37,7 @@ module HSQL
     def data
       @data ||= begin
         if metadata['data']
-          unless metadata['data'].key?(environment)
+          if environment && !metadata['data'].key?(environment)
             fail ArgumentError, "The environment #{environment.inspect} is not specified"
           end
           metadata['data'][environment] || {}

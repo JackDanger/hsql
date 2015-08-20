@@ -41,7 +41,34 @@ RSpec.describe HSQL::Data do
     subject(:for_machines) { HSQL::Data.for_machines(Time.current) }
 
     it "assigns the right seconds" do
-      pending
+      expect(for_machines).to eq({
+        'beginning_of_hour'             => 1.hour.ago.end_of_hour + 1.second,
+        'beginning_of_day'              => 1.day.ago.end_of_day + 1.second,
+        'beginning_of_week'             => 1.week.ago.end_of_week + 1.second,
+        'beginning_of_month'            => 1.month.ago.end_of_month + 1.second,
+        'beginning_of_quarter'          => 3.months.ago.end_of_quarter + 1.second,
+        'beginning_of_year'             => 1.year.ago.end_of_year + 1.second,
+
+        'end_of_hour'                   => 1.hour.from_now.beginning_of_hour - 1.second,
+        'end_of_day'                    => 1.day.from_now.beginning_of_day - 1.second,
+        'end_of_week'                   => 1.week.from_now.beginning_of_week - 1.second,
+        'end_of_month'                  => 1.month.from_now.beginning_of_month - 1.second,
+        'end_of_quarter'                => 3.months.from_now.beginning_of_quarter - 1.second,
+        'end_of_year'                   => 1.year.from_now.beginning_of_year - 1.second,
+
+        'beginning_of_previous_hour'    => 2.hours.ago.end_of_hour + 1.second,
+        'end_of_previous_hour'          => 1.hour.ago.end_of_hour,
+        'beginning_of_previous_day'     => 2.days.ago.end_of_day + 1.second,
+        'end_of_previous_day'           => 1.day.ago.end_of_day,
+        'beginning_of_previous_week'    => 2.weeks.ago.end_of_week + 1.second,
+        'end_of_previous_week'          => 1.week.ago.end_of_week,
+        'beginning_of_previous_month'   => 2.months.ago.end_of_month + 1.second,
+        'end_of_previous_month'         => 1.month.ago.end_of_month,
+        'beginning_of_previous_quarter' => 6.months.ago.end_of_quarter + 1.second,
+        'end_of_previous_quarter'       => 3.months.ago.end_of_quarter,
+        'beginning_of_previous_year'    => 2.years.ago.end_of_year + 1.second,
+        'end_of_previous_year'          => 1.year.ago.end_of_year,
+      }.reduce({}) { |h, (k,v)| h.update k => v.to_s.inspect })
     end
   end
 end
