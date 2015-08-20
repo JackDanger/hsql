@@ -37,23 +37,23 @@ describe HSQL::File do
           'data' => {
             'production' => {
               'output_table' => 'summaries',
-              'update_condition' => nil
+              'update_condition' => nil,
             },
             'development' => {
               'output_table' => 'jackdanger_summaries',
-              'update_condition' => 'WHERE 1 <> 1'
-            }
-          }
+              'update_condition' => 'WHERE 1 <> 1',
+            },
+          },
         )
         expect(parse.queries.map(&:to_s)).to eql([
           'INSERT INTO jackdanger_summaries SELECT * FROM interesting_information',
-          'UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1'
+          'UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1',
         ])
       end
     end
 
     context 'when the front matter is missing' do
-      let(:file_contents) { "INSERT INTO some_table SELECT * FROM interesting_information" }
+      let(:file_contents) { 'INSERT INTO some_table SELECT * FROM interesting_information' }
 
       it 'throws an error' do
         expect(parse.queries.first.to_s).to eq(file_contents)
@@ -104,4 +104,3 @@ SQL
     end
   end
 end
-

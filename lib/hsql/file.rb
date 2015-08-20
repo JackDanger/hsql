@@ -49,7 +49,8 @@ module HSQL
       @split ||= begin
         top_half, divider, rest = string.partition(/^---$/)
         if divider.present?
-          @front_matter, @sql = top_half, rest
+          @front_matter = top_half
+          @sql = rest
         else # No divider found, therefore no YAML header
           @sql = top_half
         end

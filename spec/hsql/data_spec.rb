@@ -7,7 +7,7 @@ RSpec.describe HSQL::Data do
   describe '.for_humans' do
     subject(:for_humans) { HSQL::Data.for_humans }
 
-    it "reads clearly" do
+    it 'reads clearly' do
       expect(for_humans).to eq(<<-DOC.chomp)
     {{{beginning_of_hour}}}             The first second of the hour
     {{{beginning_of_day}}}              The first second of the day
@@ -40,7 +40,7 @@ RSpec.describe HSQL::Data do
   describe '.for_machines' do
     subject(:for_machines) { HSQL::Data.for_machines(Time.current) }
 
-    it "assigns the right seconds" do
+    it 'assigns the right seconds' do
       expect(for_machines).to eq({
         'beginning_of_hour'             => 1.hour.ago.end_of_hour + 1.second,
         'beginning_of_day'              => 1.day.ago.end_of_day + 1.second,
@@ -68,7 +68,7 @@ RSpec.describe HSQL::Data do
         'end_of_previous_quarter'       => 3.months.ago.end_of_quarter,
         'beginning_of_previous_year'    => 2.years.ago.end_of_year + 1.second,
         'end_of_previous_year'          => 1.year.ago.end_of_year,
-      }.reduce({}) { |h, (k,v)| h.update k => "'#{v}'" })
+      }.reduce({}) { |h, (k, v)| h.update k => "'#{v}'" })
     end
   end
 end

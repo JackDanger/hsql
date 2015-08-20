@@ -8,6 +8,7 @@ module HSQL
     def render(hash)
       Mustache.render(input, hash)
     end
+
     private
 
     # See Mustache::Generator#compile! for reference code

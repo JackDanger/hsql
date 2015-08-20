@@ -6,7 +6,6 @@ require 'json'
 
 options = {}
 option_parser = OptionParser.new do |opts|
-
   opts.banner = <<-BANNER
 Usage: #{__FILE__} file [environment] [--yaml]
 
@@ -22,17 +21,17 @@ BANNER
   opts.on('-e', '--env', 'Which key of the YAML header "data:" key you want to interpolate.') do |option|
     options[:environment] = option
   end
-  opts.on('-y', '--yaml', 'Output just the metadata for this file as YAML') do |option|
+  opts.on('-y', '--yaml', 'Output just the metadata for this file as YAML') do |_option|
     options[:meta_only] = 'yaml'
   end
-  opts.on('-j', '--json', 'Output just the metadata for this file as JSON') do |option|
+  opts.on('-j', '--json', 'Output just the metadata for this file as JSON') do |_option|
     options[:meta_only] = 'json'
   end
-  opts.on_tail('-v', '--version', 'Show the current version of HSQL') do |option|
+  opts.on_tail('-v', '--version', 'Show the current version of HSQL') do |_option|
     puts HSQL::VERSION
     exit 1
   end
-  opts.on('-h', '--help', 'Show the full help documentation') do |option|
+  opts.on('-h', '--help', 'Show the full help documentation') do |_option|
     require_relative '../lib/hsql/data'
     <<-HELP
 TEMPLATE
