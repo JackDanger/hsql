@@ -4,3 +4,11 @@ Style/TrailingComma:
 
 Metrics/LineLength:
   Max: 110
+
+StructInheritance:
+  Enabled: false
+
+# `module_function` is strictly worse than `extend self` due to the confusion
+# `module_function` introduces by not copying private methods to the class.
+Style/ModuleFunction:
+  Enabled: false

@@ -1,5 +1,6 @@
 require 'active_support/time'
 module HSQL
+  # This module provides a set of useful values to be inserted into templates.
   module Data
     extend self
 
@@ -26,6 +27,8 @@ module HSQL
     # A set of template variables that are always available and defined in
     # relation to the provided time or date.
     # The structure is designed to make generating documentation easier.
+    #
+    # rubocop:disable Metrics/LineLength, Metrics/MethodLength, Metrics/AbcSize
     def calendar_moments(time)
       # Time ranges surrounding the moment provided.
       moment = time
@@ -77,6 +80,8 @@ module HSQL
         ['beginning_of_previous_year',  moment.beginning_of_year, 'The first second of the previous year'],
         ['end_of_previous_year',        moment.end_of_year,       'The last second of the previous year'],
       ]
+
+      moments
     end
   end
 end

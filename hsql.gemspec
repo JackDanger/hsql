@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['gems@jackcanty.com']
 
   spec.summary       = 'Store a hash of data with your SQL queries.'
-  spec.description   = 'Write SQL queries in a .sql format and ship them with metadata about how they should be executed'
+  spec.description   = 'Write SQL queries with Mustache and easily render them for specific dates/times'
   spec.homepage      = 'https://github.com/JackDanger/hsql'
   spec.license       = 'MIT'
 

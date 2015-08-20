@@ -1,6 +1,15 @@
 require 'mustache'
 module HSQL
-  class Template < Struct.new(:input)
+  # Given some SQL that may contain Mustache tags (e.g. {{{ variable }}} ),
+  # accept a hash of data that interpolates each tag.
+  # Throws an error if one of the tag names can't be found in the data.
+  class Template
+    attr_reader :input
+
+    def initialize(input)
+      @input = input
+    end
+
     def variable_names
       extract_variable_names(ast).uniq
     end
@@ -17,7 +26,7 @@ module HSQL
       if tree[1] == :fetch
         tree.last.first
       else
-        tree.map { |token| extract_variable_names(token) }.compact.flatten
+        tree.map { |token| extract_variable_names(token) }.flatten.compact
       end
     end
 

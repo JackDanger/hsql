@@ -1,6 +1,6 @@
-# PgQuery uses Postgres' own parser to parse and then deparse each query.
 require 'pg_query'
 module HSQL
+  # PgQuery uses Postgres' own parser to parse and then deparse each query.
   class Query < Struct.new(:ast)
     # Returns a list of queries found in the source SQL
     def self.parse(source)

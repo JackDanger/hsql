@@ -1,10 +1,10 @@
-# HSQL::File parses the input file and provides reader methods to the hash of
-# YAML data from the front matter section and a list of the queries in the SQL
-# portion.
 require 'yaml'
 require_relative 'query'
 require_relative 'data'
 module HSQL
+  # HSQL::File parses the input file and provides reader methods to the hash of
+  # YAML data from the front matter section and a list of the queries in the SQL
+  # portion.
   class File
     attr_reader :string, :timestamp, :environment
 
@@ -60,26 +60,32 @@ module HSQL
 
     def data
       @data ||= begin
-        if metadata['data']
-          if environment && !metadata['data'].key?(environment)
-            fail ArgumentError, "The environment #{environment.inspect} is not specified"
-          end
-          metadata['data'][environment] || {}
-        else
-          {}
-        end.merge(Data.for_machines(timestamp))
+        validate_environment_exists!
+
+        hash = if environment
+                 metadata['data'].fetch(environment, {})
+               else
+                 metadata.fetch('data', {})
+               end
+        hash.merge(Data.for_machines(timestamp))
       end
+    end
+
+    def validate_environment_exists!
+      return unless environment
+      return if metadata['data'].key?(environment)
+      fail ArgumentError, "The environment #{environment.inspect} is not specified"
     end
 
     def interpolate_data!
       template = Template.new(@sql)
       template.variable_names.each do |name|
-        unless data.key?(name)
-          if environment
-            fail FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
-          else
-            fail FormatError, "#{name.inspect} is not set! Did you provide the right environment argument?"
-          end
+        next if data.key?(name)
+
+        if environment
+          fail FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
+        else
+          fail FormatError, "#{name.inspect} is not set! Did you provide the right environment argument?"
         end
       end
 
