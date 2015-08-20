@@ -6,7 +6,7 @@ require_relative 'query'
 module HSQL
   class File < Struct.new(:string, :environment)
     def metadata
-      @metadata ||= ::YAML.load(@front_matter)
+      @metadata ||= @front_matter ? ::YAML.load(@front_matter) : {}
     end
 
     def queries
@@ -23,9 +23,11 @@ module HSQL
 
     def split!
       @split ||= begin
-        @front_matter, divider, @sql = string.partition(/^---$/)
-        unless divider == '---'
-          fail FormatError, 'The YAML front matter is required, otherwise this is just a SQL file'
+        top_half, divider, rest = string.partition(/^---$/)
+        if divider.present?
+          @front_matter, @sql = top_half, rest
+        else # No divider found, therefore no YAML header
+          @sql = top_half
         end
         true
       end
@@ -37,8 +39,10 @@ module HSQL
           unless metadata['data'].key?(environment)
             fail ArgumentError, "The environment #{environment.inspect} is not specified"
           end
-          metadata['data'][environment]
-        end || {}
+          metadata['data'][environment] || {}
+        else
+          {}
+        end.merge(Template.calendar_moment_data(Time.current))
       end
     end
 

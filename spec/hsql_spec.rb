@@ -52,15 +52,10 @@ describe HSQL do
     end
 
     context 'when the front matter is missing' do
-      let(:file_contents) do
-        <<-SQL
-INSERT INTO {{{output_table}}} SELECT * FROM interesting_information;
-UPDATE summaries_performed SET complete = 1 {{{update_condition}}};
-SQL
-      end
+      let(:file_contents) { "INSERT INTO some_table SELECT * FROM interesting_information" }
 
       it 'throws an error' do
-        expect { parse }.to raise_error(HSQL::FormatError, /The YAML front matter is required/)
+        expect(parse.queries.first.to_s).to eq(file_contents)
       end
     end
 

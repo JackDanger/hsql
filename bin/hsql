@@ -7,11 +7,14 @@ require 'json'
 options = {}
 option_parser = OptionParser.new do |opts|
   opts.banner = <<-BANNER
-USAGE: #{__FILE__} file environment [--yaml]
+USAGE: #{__FILE__} file [environment] [--yaml]
 
-file:        Any *.sql file that has a YAML header ending in three hyphens.
-environment: Must be one of the keys of the "data" hash in the YAML header of the .sql file.
---yaml:      Outputs only the YAML metadata from the file, not the SQL queries themselves.
+ARGUMENTS
+  file:        Any *.sql file that has a YAML header ending in three hyphens.
+  environment: Must be one of the keys of the "data" hash in the YAML header of the .sql file.
+
+OPTIONS
+  --yaml:      Outputs only the YAML metadata from the file, not the SQL queries themselves.
 
 for details, run:
   open https://github.com/JackDanger/hsql
@@ -29,7 +32,7 @@ option_parser.parse!
 
 filename, env = ARGV
 
-unless filename && env
+unless filename
   puts option_parser.banner
   exit 1
 end
