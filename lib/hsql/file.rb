@@ -3,6 +3,7 @@
 # portion.
 require 'yaml'
 require_relative 'query'
+require_relative 'data'
 module HSQL
   class File < Struct.new(:string, :environment)
     def metadata
@@ -42,7 +43,7 @@ module HSQL
           metadata['data'][environment] || {}
         else
           {}
-        end.merge(Template.calendar_moment_data(Time.current))
+        end.merge(Data.for_machines(Time.current))
       end
     end
 
@@ -50,7 +51,11 @@ module HSQL
       template = Template.new(@sql)
       template.variable_names.each do |name|
         unless data.key?(name)
-          fail FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
+          if environment
+            fail FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
+          else
+            fail FormatError, "#{name.inspect} is not set! Did you provide the right environment argument?"
+          end
         end
       end
 

@@ -4,9 +4,15 @@ require 'optparse'
 require 'yaml'
 require 'json'
 
-options = {}
-option_parser = OptionParser.new do |opts|
-  opts.banner = <<-BANNER
+module Documentation
+  extend self
+
+  def all
+    banner + "\n\n" + help
+  end
+
+  def banner
+    <<-BANNER
 USAGE: #{__FILE__} file [environment] [--yaml]
 
 ARGUMENTS
@@ -19,21 +25,52 @@ OPTIONS
 for details, run:
   open https://github.com/JackDanger/hsql
 BANNER
+  end
 
+  def help
+    require_relative '../lib/hsql/data'
+    <<-HELP
+TEMPLATE
+
+You can use the Mustache syntax (three curly braces) to interpolate any of your
+'data' into your SQL. You specify the data in the YAML header like so:
+
+    data:
+      production:     # whatever you want to be interpolated into your SQL
+        name: Alison  # when you pass 'production' as the environment argument
+      development:
+        name: Kailey
+    ---
+    SELECT * FROM users WHERE name = '{{{name}}}'
+
+
+There are some common date values available to you at all times, without having
+to be defined in the YAML header:
+
+#{HSQL::Data.for_humans}
+HELP
+  end
+end
+
+options = {}
+OptionParser.new do |opts|
+#  opts.banner = Documentation.banner
   opts.on('-y', '--yaml', 'Output metadata for this file as YAML') do |option|
     options[:meta_only] = 'yaml'
   end
   opts.on('-j', '--json', 'Output metadata for this file as JSON') do |option|
     options[:meta_only] = 'json'
   end
-end
-
-option_parser.parse!
+  opts.on('-h', '--help', 'Show the full help documentation') do |option|
+    puts Documentation.all
+    exit 1
+  end
+end.parse!
 
 filename, env = ARGV
 
 unless filename
-  puts option_parser.banner
+  puts Documentation.banner
   exit 1
 end
 

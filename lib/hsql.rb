@@ -13,7 +13,6 @@ module HSQL
   # example) this will return a HSQL::File object providing access to the parts
   # of that file.
   def self.parse(string, environment)
-    fail ArgumentError, 'The environment argument is required' unless environment
     File.new(string, environment).parse!
   end
 

@@ -26,5 +26,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rubocop', '~> 0.3'
   spec.add_development_dependency 'rake', '> 0'
   spec.add_development_dependency 'rspec', '~> 3.3'
+  spec.add_development_dependency 'timecop', '~> 0.8.0'
   spec.add_development_dependency 'pry-byebug', '> 3'
 end
