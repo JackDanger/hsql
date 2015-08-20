@@ -2,12 +2,24 @@ require_relative '../../lib/hsql/file'
 
 describe HSQL::File do
   let(:readme) { ::File.expand_path('../../../README.md', __FILE__) }
-  # Use the example in the README as the canonical test case.
   let(:file_contents) do
-    ::File.readlines(readme).select do |line|
-      line =~ /^        /
-    end.map { |line| line.sub!(/^        /, '') }.compact.join
+    <<-SQL
+# filename: daily_summary.sql
+owner: jackdanger
+schedule: hourly
+data:
+  production:
+    output_table: summaries
+    update_condition:
+  development:
+    output_table: jackdanger_summaries
+    update_condition: WHERE 1 <> 1
+---
+INSERT INTO {{{output_table}}} SELECT * FROM interesting_information;
+UPDATE summaries_performed SET complete = 1 {{{update_condition}}};
+SQL
   end
+
   let(:environment) { 'development' }
   let(:options) { { environment: environment } }
 
