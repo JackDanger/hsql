@@ -53,7 +53,9 @@ describe HSQL::File do
     end
 
     context 'when the front matter is missing' do
-      let(:file_contents) { 'INSERT INTO some_table SELECT * FROM interesting_information' }
+      let(:file_contents) do
+        'INSERT INTO some_table SELECT * FROM interesting_information'
+      end
 
       it 'throws an error' do
         expect(parse.queries.first.to_s).to eq(file_contents)
@@ -64,7 +66,10 @@ describe HSQL::File do
       let(:environment) {}
 
       it 'throws an error' do
-        expect { parse }.to raise_error(HSQL::File::FormatError, /"output_table" is not set! Did you provide the right environment argument?/)
+        expect { parse }.to raise_error(
+          HSQL::File::FormatError,
+          /"output_table" is not set! Did you provide the right environment argument?/,
+        )
       end
     end
 
@@ -85,14 +90,19 @@ SELECT * from {{{table}}};
 SQL
       end
       it 'throws an error' do
-        expect { parse }.to raise_error(HSQL::File::FormatError, /"table" is not set in "development" environment/)
+        expect { parse }.to raise_error(
+          HSQL::File::FormatError,
+          /"table" is not set in "development" environment/,
+        )
       end
     end
 
     context 'for the development environment' do
       let(:environment) { 'development' }
       it 'interpolates development variables' do
-        expect(parse.queries.map(&:to_s).join).to match(/INSERT INTO jackdanger_summaries/)
+        expect(parse.queries.map(&:to_s).join).to match(
+          /INSERT INTO jackdanger_summaries/,
+        )
       end
     end
 
