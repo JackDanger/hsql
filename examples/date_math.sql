@@ -1,6 +1,16 @@
--- Demonstrating use of the always-available time and date variables.
--- No YAML front matter was necessary for this file to work.
--- To try this out, run: $ hsql examples/date_math.sql
+/*
+Demonstrating use of the builtin time and date variables.
+No YAML front matter was necessary for this file to work.
+
+To see all possible variables you can use run:
+
+    $ hsql --help
+
+To see yourself how this file works run:
+
+    $ hsql examples/date_math.sql
+
+*/
 
 SELECT * FROM users WHERE created_at BETWEEN {{{beginning_of_hour}}} AND {{{end_of_hour}}};
 /* Becomes:
