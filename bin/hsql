@@ -3,6 +3,7 @@
 require 'optparse'
 require 'yaml'
 require 'json'
+require 'active_support/time'
 
 options = {}
 option_parser = OptionParser.new do |opts|
@@ -15,10 +16,14 @@ ARGUMENTS
 OPTIONS
 BANNER
 
-  opts.on('-d', '--date', '--timestamp', 'The time that the SQL will consider to be "now".') do |option|
-    options[:timestamp] = option
+  opts.on('-d DATE',
+          '--date DATE',
+          '--timestamp DATE', 'The time that the SQL will consider to be "now".') do |option|
+    options[:timestamp] = Time.parse(option) if option
   end
-  opts.on('-e', '--env', 'Which key of the YAML header "data:" key you want to interpolate.') do |option|
+  opts.on('-e ENV',
+          '--env ENV',
+          'Which key of the YAML header "data:" key you want to interpolate.') do |option|
     options[:environment] = option
   end
   opts.on('-y', '--yaml', 'Output just the metadata for this file as YAML') do |_option|

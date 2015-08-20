@@ -9,6 +9,7 @@ RSpec.describe HSQL::Data do
 
     it 'reads clearly' do
       expect(for_humans).to eq(<<-DOC.chomp)
+    {{{now}}}                           The moment provided via --date or --timestamp (defaults to the current system time)
     {{{beginning_of_hour}}}             The first second of the hour
     {{{beginning_of_day}}}              The first second of the day
     {{{beginning_of_week}}}             The first second of the week
@@ -33,7 +34,7 @@ RSpec.describe HSQL::Data do
     {{{end_of_previous_quarter}}}       The last second of the previous quarter
     {{{beginning_of_previous_year}}}    The first second of the previous year
     {{{end_of_previous_year}}}          The last second of the previous year
-      DOC
+DOC
     end
   end
 
@@ -42,6 +43,7 @@ RSpec.describe HSQL::Data do
 
     it 'assigns the right seconds' do
       expect(for_machines).to eq({
+        'now'                           => Time.current,
         'beginning_of_hour'             => 1.hour.ago.end_of_hour + 1.second,
         'beginning_of_day'              => 1.day.ago.end_of_day + 1.second,
         'beginning_of_week'             => 1.week.ago.end_of_week + 1.second,

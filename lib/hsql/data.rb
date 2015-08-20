@@ -6,7 +6,9 @@ module HSQL
 
     # The internal API for reading this data and inserting it into queries.
     def for_machines(time)
-      Hash[calendar_moments(time).map { |name, value, _documentation| [name, "'#{value}'"] }]
+      Hash[
+        calendar_moments(time).map { |name, value, _documentation| [name, "'#{value}'"] }
+      ]
     end
 
     # For presenting to users the possible template variables they can use.
@@ -32,7 +34,13 @@ module HSQL
     def calendar_moments(time)
       # Time ranges surrounding the moment provided.
       moment = time
-      moments = [
+      moments = []
+
+      moments += [
+        ['now', moment, 'The moment provided via --date or --timestamp (defaults to the current system time)'],
+      ]
+
+      moments += [
         ['beginning_of_hour',    moment.beginning_of_hour,    'The first second of the hour'],
         ['beginning_of_day',     moment.beginning_of_day,     'The first second of the day'],
         ['beginning_of_week',    moment.beginning_of_week,    'The first second of the week'],
