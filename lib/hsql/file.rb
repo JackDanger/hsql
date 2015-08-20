@@ -62,18 +62,15 @@ module HSQL
       @data ||= begin
         validate_environment_exists!
 
-        hash = if environment
-                 metadata['data'].fetch(environment, {})
-               else
-                 metadata.fetch('data', {})
-               end
+        hash = metadata['data'] || {}
+        hash = hash[environment] || {} if environment
         hash.merge(Data.for_machines(timestamp))
       end
     end
 
     def validate_environment_exists!
       return unless environment
-      return if metadata['data'].key?(environment)
+      return if metadata['data'].blank? || metadata['data'].key?(environment)
       fail ArgumentError, "The environment #{environment.inspect} is not specified"
     end
 
