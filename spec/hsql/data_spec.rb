@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/LineLength
 require_relative '../../lib/hsql/data'
 require 'timecop'
 
