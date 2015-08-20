@@ -1,14 +1,15 @@
-require_relative '../lib/hsql'
+require_relative '../../lib/hsql/file'
 
-describe HSQL do
-  let(:readme) { File.expand_path('../../README.md', __FILE__) }
+describe HSQL::File do
+  let(:readme) { ::File.expand_path('../../../README.md', __FILE__) }
   # Use the example in the README as the canonical test case.
   let(:file_contents) do
-    File.readlines(readme).select do |line|
+    ::File.readlines(readme).select do |line|
       line =~ /^        /
     end.map { |line| line.sub!(/^        /, '') }.compact.join
   end
   let(:environment) { 'development' }
+  let(:options) { { environment: environment } }
 
   describe '.parse_file' do
     let(:file) do
@@ -17,16 +18,16 @@ describe HSQL do
       f.seek 0
       f
     end
-    subject(:parse_file) { HSQL.parse_file(file, environment) }
+    subject(:parse_file) { HSQL::File.parse_file(file, options) }
 
     it 'sends the file contents to HSQL.parse' do
-      expect(HSQL).to receive(:parse).with(file_contents, environment)
+      expect(HSQL::File).to receive(:parse).with(file_contents, options)
       parse_file
     end
   end
 
   describe '.parse' do
-    subject(:parse) { HSQL.parse(file_contents, environment) }
+    subject(:parse) { HSQL::File.parse(file_contents, options) }
 
     context 'when using the example from the README' do
       it 'interpolates successfully' do
@@ -63,7 +64,7 @@ describe HSQL do
       let(:environment) {}
 
       it 'throws an error' do
-        expect { parse }.to raise_error(HSQL::FormatError, /"output_table" is not set! Did you provide the right environment argument?/)
+        expect { parse }.to raise_error(HSQL::File::FormatError, /"output_table" is not set! Did you provide the right environment argument?/)
       end
     end
 
@@ -84,7 +85,7 @@ SELECT * from {{{table}}};
 SQL
       end
       it 'throws an error' do
-        expect { parse }.to raise_error(HSQL::FormatError, /"table" is not set in "development" environment/)
+        expect { parse }.to raise_error(HSQL::File::FormatError, /"table" is not set in "development" environment/)
       end
     end
 
@@ -103,3 +104,4 @@ SQL
     end
   end
 end
+

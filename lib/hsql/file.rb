@@ -5,7 +5,30 @@ require 'yaml'
 require_relative 'query'
 require_relative 'data'
 module HSQL
-  class File < Struct.new(:string, :environment)
+  class File
+    attr_reader :string, :timestamp, :environment
+
+    # This is used to indicate when a source file is malformed.
+    class FormatError < StandardError
+    end
+
+    def initialize(string, options)
+      @string = string
+      @timestamp = options.fetch(:timestamp, Time.current)
+      @environment = options[:environment]
+    end
+
+    # Given the contents of a SQL file with YAML front matter (see README for an
+    # example) this will return a HSQL::File object providing access to the parts
+    # of that file.
+    def self.parse(string, options)
+      new(string, options).parse!
+    end
+
+    def self.parse_file(file, options)
+      parse(file.read, options)
+    end
+
     def metadata
       @metadata ||= @front_matter ? ::YAML.load(@front_matter) : {}
     end
@@ -43,7 +66,7 @@ module HSQL
           metadata['data'][environment] || {}
         else
           {}
-        end.merge(Data.for_machines(Time.current))
+        end.merge(Data.for_machines(timestamp))
       end
     end
 

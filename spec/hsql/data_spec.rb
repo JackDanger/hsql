@@ -68,7 +68,7 @@ RSpec.describe HSQL::Data do
         'end_of_previous_quarter'       => 3.months.ago.end_of_quarter,
         'beginning_of_previous_year'    => 2.years.ago.end_of_year + 1.second,
         'end_of_previous_year'          => 1.year.ago.end_of_year,
-      }.reduce({}) { |h, (k,v)| h.update k => v.to_s.inspect })
+      }.reduce({}) { |h, (k,v)| h.update k => "'#{v}'" })
     end
   end
 end

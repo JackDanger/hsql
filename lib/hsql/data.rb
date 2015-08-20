@@ -5,7 +5,7 @@ module HSQL
 
     # The internal API for reading this data and inserting it into queries.
     def for_machines(time)
-      Hash[calendar_moments(time).map { |name, value, _documentation| [name, value.to_s.inspect] }]
+      Hash[calendar_moments(time).map { |name, value, _documentation| [name, "'#{value}'"] }]
     end
 
     # For presenting to users the possible template variables they can use.

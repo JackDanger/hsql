@@ -4,30 +4,35 @@ require 'optparse'
 require 'yaml'
 require 'json'
 
-module Documentation
-  extend self
+options = {}
+option_parser = OptionParser.new do |opts|
 
-  def all
-    banner + "\n\n" + help
-  end
-
-  def banner
-    <<-BANNER
-USAGE: #{__FILE__} file [environment] [--yaml]
+  opts.banner = <<-BANNER
+Usage: #{__FILE__} file [environment] [--yaml]
 
 ARGUMENTS
-  file:        Any *.sql file that has a YAML header ending in three hyphens.
-  environment: Must be one of the keys of the "data" hash in the YAML header of the .sql file.
+  file: Any *.sql file that has a YAML header ending in three hyphens.
 
 OPTIONS
-  --yaml:      Outputs only the YAML metadata from the file, not the SQL queries themselves.
-
-for details, run:
-  open https://github.com/JackDanger/hsql
 BANNER
-  end
 
-  def help
+  opts.on('-d', '--date', '--timestamp', 'The time that the SQL will consider to be "now".') do |option|
+    options[:timestamp] = option
+  end
+  opts.on('-e', '--env', 'Which key of the YAML header "data:" key you want to interpolate.') do |option|
+    options[:environment] = option
+  end
+  opts.on('-y', '--yaml', 'Output just the metadata for this file as YAML') do |option|
+    options[:meta_only] = 'yaml'
+  end
+  opts.on('-j', '--json', 'Output just the metadata for this file as JSON') do |option|
+    options[:meta_only] = 'json'
+  end
+  opts.on_tail('-v', '--version', 'Show the current version of HSQL') do |option|
+    puts HSQL::VERSION
+    exit 1
+  end
+  opts.on('-h', '--help', 'Show the full help documentation') do |option|
     require_relative '../lib/hsql/data'
     <<-HELP
 TEMPLATE
@@ -48,29 +53,18 @@ There are some common date values available to you at all times, without having
 to be defined in the YAML header:
 
 #{HSQL::Data.for_humans}
+
+For more details, run:
+  open https://github.com/JackDanger/hsql
 HELP
   end
 end
+option_parser.parse!
 
-options = {}
-OptionParser.new do |opts|
-#  opts.banner = Documentation.banner
-  opts.on('-y', '--yaml', 'Output metadata for this file as YAML') do |option|
-    options[:meta_only] = 'yaml'
-  end
-  opts.on('-j', '--json', 'Output metadata for this file as JSON') do |option|
-    options[:meta_only] = 'json'
-  end
-  opts.on('-h', '--help', 'Show the full help documentation') do |option|
-    puts Documentation.all
-    exit 1
-  end
-end.parse!
-
-filename, env = ARGV
+filename = ARGV.first
 
 unless filename
-  puts Documentation.banner
+  puts option_parser
   exit 1
 end
 
@@ -83,7 +77,7 @@ end
 
 require_relative '../lib/hsql'
 
-file = HSQL.parse_file(file, env)
+file = HSQL::File.parse_file(file, options)
 if 'yaml' == options[:meta_only]
   puts file.metadata.to_yaml
 elsif 'json' == options[:meta_only]
