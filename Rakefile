@@ -17,3 +17,9 @@ end
 task default: [:lint, :spec]
 task test: :spec
 task lint: :rubocop
+
+task :publish do
+  require_relative 'lib/hsql/version'
+  system(p('gem build hsql.gemspec'))
+  system(p("gem push hsql-#{HSQL::VERSION}.gem"))
+end
