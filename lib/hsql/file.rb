@@ -91,6 +91,7 @@ module HSQL
           fail FormatError, "#{name.inspect} is not set! Did you provide the right environment argument?"
         end
       end
+      template
     end
 
     def interpolate_data!
