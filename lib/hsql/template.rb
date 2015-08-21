@@ -6,28 +6,36 @@ module HSQL
   class Template
     attr_reader :input
 
-    def initialize(input)
-      @input = input
+    # This is used to indicate when a source file is malformed.
+    class FormatError < StandardError
     end
 
-    def variable_names
-      extract_variable_names(ast).uniq
+    def initialize(input, verbose)
+      @input = input
+      @verbose = verbose
     end
 
     def render(hash)
-      Mustache.render(input, hash)
+      Mustache.raise_on_context_miss = true
+      output = Mustache.render(input, hash)
+      if @verbose
+        STDERR.puts '-- Rendered SQL:'
+        STDERR.puts output
+      end
+      output
+    rescue Mustache::ContextMiss => e
+      fail_with(e.message, hash.keys.sort)
     end
 
     private
 
-    # See Mustache::Generator#compile! for reference code
-    def extract_variable_names(tree)
-      return unless tree.is_a?(Array)
-      if tree[1] == :fetch
-        tree.last.first
-      else
-        tree.map { |token| extract_variable_names(token) }.flatten.compact
-      end
+    def fail_with(message, keys)
+      # Pull the missing template tag out of the message
+      tag = message.scan(/Can't find (\w+) in /).flatten.first
+      message = "Missing variable {{{ #{tag} }}}. At this point in the template the available variables are:"
+      message += "\n"
+      message += keys.join(', ')
+      fail FormatError, message
     end
 
     def ast

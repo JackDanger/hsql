@@ -13,17 +13,8 @@ INSERT INTO summary_{{date}} SELECT * from summaries
 ;
 MUSTACHE
   end
-  let(:template) { HSQL::Template.new(input) }
-
-  describe '#variable_names' do
-    subject(:variable_names) { template.variable_names }
-
-    it 'finds all variables, even conditionals and loops' do
-      expect(variable_names).to eq(
-        %w(table1 where escaped_where array_of_data date condition),
-      )
-    end
-  end
+  let(:verbose) { false }
+  let(:template) { HSQL::Template.new(input, verbose) }
 
   describe '#render' do
     let(:data) do

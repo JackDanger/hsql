@@ -78,17 +78,6 @@ SQL
       end
     end
 
-    context 'when the environment is not provided' do
-      let(:environment) {}
-
-      it 'throws an error' do
-        expect { parse }.to raise_error(
-          HSQL::File::FormatError,
-          /"output_table" is not set! Did you provide the right environment argument?/,
-        )
-      end
-    end
-
     context 'when there are variables in the SQL not represented in front matter' do
       let(:file_contents) do
         <<-SQL
@@ -105,10 +94,19 @@ data:
 SELECT * from {{{table}}};
 SQL
       end
+
       it 'throws an error' do
         expect { parse }.to raise_error(
-          HSQL::File::FormatError,
-          /"table" is not set in "development" environment/,
+          HSQL::Template::FormatError,
+          'Missing variable {{{ table }}}. At this point in the template the available variables are:' \
+          "\n" \
+          'beginning_of_day, beginning_of_hour, beginning_of_month, beginning_of_previous_day, ' \
+          'beginning_of_previous_hour, beginning_of_previous_month, beginning_of_previous_quarter, ' \
+          'beginning_of_previous_week, beginning_of_previous_year, beginning_of_quarter, ' \
+          'beginning_of_week, beginning_of_year, development, end_of_day, end_of_hour, ' \
+          'end_of_month, end_of_previous_day, end_of_previous_hour, end_of_previous_month, ' \
+          'end_of_previous_quarter, end_of_previous_week, end_of_previous_year, end_of_quarter, ' \
+          'end_of_week, end_of_year, now, production, test',
         )
       end
     end

@@ -10,10 +10,6 @@ module HSQL
   class File
     attr_reader :string, :timestamp, :environment
 
-    # This is used to indicate when a source file is malformed.
-    class FormatError < StandardError
-    end
-
     def initialize(string, options)
       @string = string
       @timestamp = options.fetch(:timestamp, Time.current)
@@ -56,10 +52,6 @@ module HSQL
 
     private
 
-    def verbose?
-      @verbose
-    end
-
     def split!
       @split ||= begin
         top_half, divider, rest = string.partition(/^---$/)
@@ -81,27 +73,9 @@ module HSQL
       end
     end
 
-    def template
-      template = Template.new(@sql)
-      template.variable_names.each do |name|
-        next if data.key?(name)
-        if environment
-          fail FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
-        else
-          fail FormatError, "#{name.inspect} is not set! Did you provide the right environment argument?"
-        end
-      end
-      template
-    end
-
     def interpolate_data!
       # Insert the `data:` section of YAML for the given environment into our SQL queries.
-      @rendered_sql = template.render(data)
-      if verbose?
-        STDERR.puts '-- Rendered SQL:'
-        STDERR.puts @rendered_sql
-      end
-      @rendered_sql
+      @rendered_sql = Template.new(@sql, @verbose).render(data)
     end
   end
 end
