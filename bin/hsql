@@ -33,6 +33,7 @@ BANNER
     options[:meta_only] = 'json'
   end
   opts.on_tail('-v', '--version', 'Show the current version of HSQL') do |_option|
+    require_relative '../lib/hsql/version'
     puts HSQL::VERSION
     exit 1
   end
