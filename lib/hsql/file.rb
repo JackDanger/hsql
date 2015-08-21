@@ -30,6 +30,14 @@ module HSQL
       parse(file.read, options)
     end
 
+    def to_yaml
+      metadata.to_yaml
+    end
+
+    def to_json
+      metadata.to_json
+    end
+
     def metadata
       @metadata ||= @front_matter ? ::YAML.load(@front_matter) : {}
     end

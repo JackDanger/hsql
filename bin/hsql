@@ -83,9 +83,9 @@ require_relative '../lib/hsql'
 
 file = HSQL::File.parse_file(file, options)
 if 'yaml' == options[:meta_only]
-  puts file.metadata.to_yaml
+  puts file.to_yaml
 elsif 'json' == options[:meta_only]
-  puts file.metadata.to_json
+  puts file.to_json
 else
   file.queries.each do |query|
     # Runs the query through the parser and then deparses it

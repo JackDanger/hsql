@@ -127,4 +127,46 @@ SQL
       end
     end
   end
+
+  describe '#to_yaml' do
+    let(:file) { HSQL::File.parse(file_contents,options) }
+    subject(:to_yaml) { file.to_yaml }
+
+    it { is_expected.to eq(<<-YAML) }
+---
+owner: jackdanger
+schedule: hourly
+data:
+  top_level: value
+  production:
+    output_table: summaries
+    update_condition: 
+  development:
+    output_table: jackdanger_summaries
+    update_condition: WHERE 1 <> 1
+YAML
+  end
+
+  describe '#to_json' do
+    let(:file) { HSQL::File.parse(file_contents,options) }
+    subject(:to_yaml) { file.to_json }
+
+    it { is_expected.to eq(JSON.parse(<<-YAML).to_json) }
+{
+    "owner": "jackdanger",
+    "schedule": "hourly",
+    "data": {
+        "top_level": "value",
+        "production": {
+            "output_table": "summaries",
+            "update_condition": null
+        },
+        "development": {
+            "output_table": "jackdanger_summaries",
+            "update_condition": "WHERE 1 <> 1"
+        }
+    }
+}
+YAML
+  end
 end
