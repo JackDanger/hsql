@@ -8,17 +8,17 @@ require 'active_support/time'
 options = {}
 option_parser = OptionParser.new do |opts|
   opts.banner = <<-BANNER
-Usage: #{__FILE__} file [environment] [--yaml]
+Usage: #{File.basename(__FILE__)} file [environment]
 
-ARGUMENTS
-  file: Any *.sql file that has a YAML header ending in three hyphens.
+Arguments
+  file: Any *.sql file. If it has a YAML header (ending in three hyphens) the metadata will be processed;
 
-OPTIONS
+Options
 BANNER
 
   opts.on('-d DATE',
           '--date DATE',
-          '--timestamp DATE', 'The time that the SQL will consider to be "now".') do |option|
+          '--timestamp DATE', 'The time that the SQL will consider to be "{{{now}}}".') do |option|
     options[:timestamp] = Time.parse(option) if option
   end
   opts.on('-e ENV',
