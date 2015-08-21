@@ -171,4 +171,14 @@ YAML
 }
 YAML
   end
+
+  describe 'rendering' do
+    # Simply instantiating renders the file
+    subject(:render) { HSQL::File.parse(file_contents, options) }
+
+    it 'includes top-level data in data: key' do
+      expect(Mustache).to receive(:render).with(anything, hash_including('top_level' => 'value'))
+      render
+    end
+  end
 end
