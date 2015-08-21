@@ -1,4 +1,5 @@
 require 'yaml'
+require 'json'
 require_relative 'query'
 require_relative 'data'
 require_relative 'template'
@@ -17,6 +18,7 @@ module HSQL
       @string = string
       @timestamp = options.fetch(:timestamp, Time.current)
       @environment = options[:environment]
+      @verbose = options[:verbose]
     end
 
     # Given the contents of a SQL file with YAML front matter (see README for an
@@ -54,6 +56,10 @@ module HSQL
 
     private
 
+    def verbose?
+      @verbose
+    end
+
     def split!
       @split ||= begin
         top_half, divider, rest = string.partition(/^---$/)
@@ -75,20 +81,26 @@ module HSQL
       end
     end
 
-    def interpolate_data!
+    def template
       template = Template.new(@sql)
       template.variable_names.each do |name|
         next if data.key?(name)
-
         if environment
           fail FormatError, "#{name.inspect} is not set in #{environment.inspect} environment"
         else
           fail FormatError, "#{name.inspect} is not set! Did you provide the right environment argument?"
         end
       end
+    end
 
+    def interpolate_data!
       # Insert the `data:` section of YAML for the given environment into our SQL queries.
       @rendered_sql = template.render(data)
+      if verbose?
+        STDERR.puts '-- Rendered SQL:'
+        STDERR.puts @rendered_sql
+      end
+      @rendered_sql
     end
   end
 end

@@ -14,5 +14,6 @@ data:
     update_condition: WHERE 1 <> 1
 ---
 INSERT INTO {{{output_table}}} -- this query is joined to one line
-  SELECT COUNT(*) FROM interesting_information; -- and the comments get stripped
+  SELECT COUNT(*)
+  FROM interesting_information; -- and the comments get stripped
 UPDATE summaries_performed SET complete = 1 {{{update_condition}}};

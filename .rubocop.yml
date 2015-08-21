@@ -12,3 +12,6 @@ StructInheritance:
 # `module_function` introduces by not copying private methods to the class.
 Style/ModuleFunction:
   Enabled: false
+
+Style/TrivialAccessors:
+  Enabled: false
