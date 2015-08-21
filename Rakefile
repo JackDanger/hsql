@@ -11,9 +11,7 @@ RuboCop::RakeTask.new
 # allows us to ensure there are no missing dependencies.
 task :spec do
   Dir["#{ROOT}/spec/**/*_spec.rb"].each do |spec|
-    unless system("bundle exec rspec -f d -bc #{spec}")
-      exit 1
-    end
+    exit 1 unless system("bundle exec rspec -f d -bc #{spec}")
   end
 end
 task default: [:lint, :spec]

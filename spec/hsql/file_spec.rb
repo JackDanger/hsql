@@ -1,3 +1,5 @@
+# rubocop:disable Style/TrailingWhitespace
+# (The YAML literal needs it)
 require_relative '../../lib/hsql/file'
 
 describe HSQL::File do
@@ -129,7 +131,7 @@ SQL
   end
 
   describe '#to_yaml' do
-    let(:file) { HSQL::File.parse(file_contents,options) }
+    let(:file) { HSQL::File.parse(file_contents, options) }
     subject(:to_yaml) { file.to_yaml }
 
     it { is_expected.to eq(<<-YAML) }
@@ -148,7 +150,7 @@ YAML
   end
 
   describe '#to_json' do
-    let(:file) { HSQL::File.parse(file_contents,options) }
+    let(:file) { HSQL::File.parse(file_contents, options) }
     subject(:to_yaml) { file.to_json }
 
     it { is_expected.to eq(JSON.parse(<<-YAML).to_json) }
