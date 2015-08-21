@@ -8,6 +8,7 @@ describe HSQL::File do
 owner: jackdanger
 schedule: hourly
 data:
+  top_level: value
   production:
     output_table: summaries
     update_condition:
@@ -47,6 +48,7 @@ SQL
           'owner' => 'jackdanger',
           'schedule' => 'hourly',
           'data' => {
+            'top_level' => 'value',
             'production' => {
               'output_table' => 'summaries',
               'update_condition' => nil,
