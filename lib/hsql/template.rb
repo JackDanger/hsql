@@ -19,8 +19,8 @@ module HSQL
       Mustache.raise_on_context_miss = true
       output = Mustache.render(input, hash)
       if @verbose
-        STDERR.puts '-- Rendered SQL:'
-        STDERR.puts output
+        warn '-- Rendered SQL:'
+        warn output
       end
       output
     rescue Mustache::ContextMiss => e

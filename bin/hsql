@@ -28,7 +28,12 @@ else
   # Runs the whole SQL string through the parser to find the individual queries
   # and then deparses it
   file.queries.each do |query|
-    puts '-- Parsed and deparsed SQL:' if command_line.options[:verbose]
-    puts query
+    warn '-- Parsed and deparsed SQL:' if command_line.options[:verbose]
+    begin
+      puts query
+    rescue => e
+      warn "-- #{e.inspect}" if command_line.options[:verbose]
+      puts file.rendered_sql
+    end
   end
 end

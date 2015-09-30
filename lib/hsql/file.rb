@@ -8,7 +8,7 @@ module HSQL
   # YAML data from the front matter section and a list of the queries in the SQL
   # portion.
   class File
-    attr_reader :string, :timestamp, :environment
+    attr_reader :string, :timestamp, :environment, :rendered_sql
 
     def initialize(string, options)
       @string = string
