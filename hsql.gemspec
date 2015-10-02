@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'mustache', '> 0'
   spec.add_dependency 'activesupport', '> 0'
-  spec.add_dependency 'pg_query', '>= 0.6.3'
+  spec.add_dependency 'pg_query', '>= 0.6.4'
   spec.add_development_dependency 'bundler', '~> 1.10'
   spec.add_development_dependency 'rubocop', '~> 0.3'
   spec.add_development_dependency 'rake', '> 0'

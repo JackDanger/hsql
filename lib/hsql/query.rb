@@ -13,7 +13,7 @@ module HSQL
 
     # Show the parsed query as reconstructed SQL
     def to_s
-      PgQuery.deparse ast
+      PgQuery::Deparse.from ast
     end
     alias_method :to_sql, :to_s
   end
