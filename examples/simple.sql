@@ -5,7 +5,7 @@ requires:
   - daily_payments
   - hourly_users
   - some_other_value
-data:
+environments:
   production:
     output_table: summaries
     update_condition:

@@ -1,4 +1,3 @@
-# rubocop:disable Style/TrailingWhitespace
 # (The YAML literal needs it)
 require_relative '../../lib/hsql/file'
 
@@ -9,8 +8,8 @@ describe HSQL::File do
 # filename: daily_summary.sql
 owner: jackdanger
 schedule: hourly
-data:
-  top_level: value
+top_level: value
+environments:
   production:
     output_table: summaries
     update_condition:
@@ -49,17 +48,9 @@ SQL
         expect(parse.metadata).to eql(
           'owner' => 'jackdanger',
           'schedule' => 'hourly',
-          'data' => {
-            'top_level' => 'value',
-            'production' => {
-              'output_table' => 'summaries',
-              'update_condition' => nil,
-            },
-            'development' => {
-              'output_table' => 'jackdanger_summaries',
-              'update_condition' => 'WHERE 1 <> 1',
-            },
-          },
+          'top_level' => 'value',
+          'output_table' => 'jackdanger_summaries',
+          'update_condition' => 'WHERE 1 <> 1',
         )
         expect(parse.queries.map(&:to_s)).to eql([
           'INSERT INTO jackdanger_summaries SELECT * FROM interesting_information',
@@ -83,7 +74,7 @@ SQL
         <<-SQL
 owner: jackdanger
 schedule: hourly
-data:
+environments:
   development:
     # Note that 'table' is missing
   production:
@@ -98,15 +89,7 @@ SQL
       it 'throws an error' do
         expect { parse }.to raise_error(
           HSQL::Template::FormatError,
-          'Missing variable {{{ table }}}. At this point in the template the available variables are:' \
-          "\n" \
-          'beginning_of_day, beginning_of_hour, beginning_of_month, beginning_of_previous_day, ' \
-          'beginning_of_previous_hour, beginning_of_previous_month, beginning_of_previous_quarter, ' \
-          'beginning_of_previous_week, beginning_of_previous_year, beginning_of_quarter, ' \
-          'beginning_of_week, beginning_of_year, development, end_of_day, end_of_hour, ' \
-          'end_of_month, end_of_previous_day, end_of_previous_hour, end_of_previous_month, ' \
-          'end_of_previous_quarter, end_of_previous_week, end_of_previous_year, end_of_quarter, ' \
-          'end_of_week, end_of_year, now, production, test',
+          /Missing variable {{{ table }}}. At this point in the template the available variables are:/,
         )
       end
     end
@@ -136,14 +119,9 @@ SQL
 ---
 owner: jackdanger
 schedule: hourly
-data:
-  top_level: value
-  production:
-    output_table: summaries
-    update_condition: 
-  development:
-    output_table: jackdanger_summaries
-    update_condition: WHERE 1 <> 1
+top_level: value
+output_table: jackdanger_summaries
+update_condition: WHERE 1 <> 1
 YAML
   end
 
@@ -155,17 +133,9 @@ YAML
 {
     "owner": "jackdanger",
     "schedule": "hourly",
-    "data": {
-        "top_level": "value",
-        "production": {
-            "output_table": "summaries",
-            "update_condition": null
-        },
-        "development": {
-            "output_table": "jackdanger_summaries",
-            "update_condition": "WHERE 1 <> 1"
-        }
-    }
+    "top_level": "value",
+    "output_table": "jackdanger_summaries",
+    "update_condition": "WHERE 1 <> 1"
 }
 YAML
   end

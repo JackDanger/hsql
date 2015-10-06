@@ -17,15 +17,15 @@ module HSQL
       @verbose = options[:verbose]
     end
 
-    # Given the contents of a SQL file with YAML front matter (see README for an
-    # example) this will return a HSQL::File object providing access to the parts
-    # of that file.
-    def self.parse(string, options)
-      new(string, options).parse!
+    # Given a SQL file with YAML front matter (see README for an
+    # example) this will return a HSQL::File object providing access to
+    # the parts of that file.
+    def self.parse_file(filename, options)
+      parse(::File.read(filename), options)
     end
 
-    def self.parse_file(file, options)
-      parse(file.read, options)
+    def self.parse(source, options)
+      new(source, options).parse!
     end
 
     def to_yaml
@@ -37,7 +37,11 @@ module HSQL
     end
 
     def metadata
-      @metadata ||= @front_matter ? ::YAML.load(@front_matter) : {}
+      @metadata ||= begin
+        hash = @front_matter ? ::YAML.load(@front_matter) : {}
+        environments = hash.delete('environments') || {}
+        hash.merge(environments[environment] || {})
+      end
     end
 
     def queries
@@ -46,11 +50,17 @@ module HSQL
 
     def parse!
       split!
-      interpolate_data!
+      interpolate_metadata!
       self
     end
 
     private
+
+    # Insert the `environments:` data for the given environment into our
+    # SQL queries.
+    def template_data
+      @data ||= metadata.merge(Data.for_machines(timestamp))
+    end
 
     def split!
       @split ||= begin
@@ -65,17 +75,8 @@ module HSQL
       end
     end
 
-    def data
-      @data ||= begin
-        hash = metadata['data'] || {}
-        hash = hash.merge(hash[environment] || {})
-        hash.merge(Data.for_machines(timestamp))
-      end
-    end
-
-    def interpolate_data!
-      # Insert the `data:` section of YAML for the given environment into our SQL queries.
-      @rendered_sql = Template.new(@sql, @verbose).render(data)
+    def interpolate_metadata!
+      @rendered_sql = Template.new(@sql, @verbose).render(template_data)
     end
   end
 end

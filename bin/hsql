@@ -19,7 +19,7 @@ end
 
 require_relative '../lib/hsql'
 
-file = HSQL::File.parse_file(file, options)
+file = HSQL::File.parse_file(filename, options)
 if 'yaml' == options[:meta_only]
   puts file.to_yaml
 elsif 'json' == options[:meta_only]
