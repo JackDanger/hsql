@@ -22,8 +22,8 @@ RSpec.describe HSQL::Query do
         [
           'INSERT INTO "table_a" (a, b) SELECT * FROM "table_b"',
           'SELECT count(*) FROM "users"',
-          'UPDATE "factories" SET x = "y" WHERE "a" = "b"',
-        ],
+          'UPDATE "factories" SET x = "y" WHERE "a" = "b"'
+        ]
       )
     end
   end
@@ -46,8 +46,8 @@ RSpec.describe HSQL::Query do
     it 'looks like an abstract syntax tree of a query' do
       expect(ast.keys).to eq(['INSERT INTO'])
       expect(ast.values.map(&:keys)).to eq([
-        %w(relation cols selectStmt returningList withClause),
-      ])
+                                             %w(relation cols selectStmt returningList withClause)
+                                           ])
     end
   end
 end

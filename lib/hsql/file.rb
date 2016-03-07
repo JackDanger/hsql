@@ -28,13 +28,9 @@ module HSQL
       new(source, options).parse!
     end
 
-    def to_yaml
-      metadata.to_yaml
-    end
+    delegate :to_yaml, to: :metadata
 
-    def to_json
-      metadata.to_json
-    end
+    delegate :to_json, to: :metadata
 
     def metadata
       @metadata ||= begin

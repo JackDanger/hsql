@@ -15,6 +15,6 @@ module HSQL
     def to_s
       PgQuery::Deparse.from ast
     end
-    alias_method :to_sql, :to_s
+    alias to_sql to_s
   end
 end

@@ -1,7 +1,4 @@
 
-Style/TrailingComma:
-  EnforcedStyleForMultiline: comma
-
 Metrics/LineLength:
   Max: 110
 

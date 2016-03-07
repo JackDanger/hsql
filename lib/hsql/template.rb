@@ -35,7 +35,7 @@ module HSQL
       message = "Missing variable {{{ #{tag} }}}. At this point in the template the available variables are:"
       message += "\n"
       message += keys.join(', ')
-      fail FormatError, message
+      raise FormatError, message
     end
 
     def ast

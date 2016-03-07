@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/LineLength
 require_relative '../../lib/hsql/data'
 require 'timecop'
 
@@ -70,7 +69,7 @@ DOC
         'beginning_of_previous_quarter' => 6.months.ago.end_of_quarter + 1.second,
         'end_of_previous_quarter'       => 3.months.ago.end_of_quarter,
         'beginning_of_previous_year'    => 2.years.ago.end_of_year + 1.second,
-        'end_of_previous_year'          => 1.year.ago.end_of_year,
+        'end_of_previous_year'          => 1.year.ago.end_of_year
       }.reduce({}) { |h, (k, v)| h.update k => "'#{v}'" })
     end
   end

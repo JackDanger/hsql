@@ -50,12 +50,14 @@ SQL
           'schedule' => 'hourly',
           'top_level' => 'value',
           'output_table' => 'jackdanger_summaries',
-          'update_condition' => 'WHERE 1 <> 1',
+          'update_condition' => 'WHERE 1 <> 1'
         )
-        expect(parse.queries.map(&:to_s)).to eql([
-          'INSERT INTO "jackdanger_summaries" SELECT * FROM "interesting_information"',
-          'UPDATE "summaries_performed" SET complete = 1 WHERE 1 <> 1',
-        ])
+        expect(parse.queries.map(&:to_s)).to eql(
+          [
+            'INSERT INTO "jackdanger_summaries" SELECT * FROM "interesting_information"',
+            'UPDATE "summaries_performed" SET complete = 1 WHERE 1 <> 1'
+          ]
+        )
       end
     end
 
@@ -89,7 +91,7 @@ SQL
       it 'throws an error' do
         expect { parse }.to raise_error(
           HSQL::Template::FormatError,
-          /Missing variable {{{ table }}}. At this point in the template the available variables are:/,
+          /Missing variable {{{ table }}}. At this point in the template the available variables are:/
         )
       end
     end
@@ -98,7 +100,7 @@ SQL
       let(:environment) { 'development' }
       it 'interpolates development variables' do
         expect(parse.queries.map(&:to_s).join).to match(
-          /INSERT INTO "jackdanger_summaries"/,
+          /INSERT INTO "jackdanger_summaries"/
         )
       end
     end

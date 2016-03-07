@@ -25,13 +25,13 @@ MUSTACHE
         array_of_data: [
           {
             condition: true,
-            date: '20220205',
+            date: '20220205'
           },
           {
             condition: true,
-            date: '20220206',
-          },
-        ],
+            date: '20220206'
+          }
+        ]
       }
     end
     subject(:render) { template.render(data) }
