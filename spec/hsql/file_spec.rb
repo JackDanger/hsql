@@ -53,15 +53,15 @@ SQL
           'update_condition' => 'WHERE 1 <> 1',
         )
         expect(parse.queries.map(&:to_s)).to eql([
-          'INSERT INTO jackdanger_summaries SELECT * FROM interesting_information',
-          'UPDATE summaries_performed SET complete = 1 WHERE 1 <> 1',
+          'INSERT INTO "jackdanger_summaries" SELECT * FROM "interesting_information"',
+          'UPDATE "summaries_performed" SET complete = 1 WHERE 1 <> 1',
         ])
       end
     end
 
     context 'when the front matter is missing' do
       let(:file_contents) do
-        'INSERT INTO some_table SELECT * FROM interesting_information'
+        'INSERT INTO "some_table" SELECT * FROM "interesting_information"'
       end
 
       it 'throws an error' do
@@ -98,7 +98,7 @@ SQL
       let(:environment) { 'development' }
       it 'interpolates development variables' do
         expect(parse.queries.map(&:to_s).join).to match(
-          /INSERT INTO jackdanger_summaries/,
+          /INSERT INTO "jackdanger_summaries"/,
         )
       end
     end
@@ -106,7 +106,7 @@ SQL
     context 'for the production environment' do
       let(:environment) { 'production' }
       it 'interpolates production variables' do
-        expect(parse.queries.map(&:to_s).join).to match(/INSERT INTO summaries/)
+        expect(parse.queries.map(&:to_s).join).to match(/INSERT INTO "summaries"/)
       end
     end
   end

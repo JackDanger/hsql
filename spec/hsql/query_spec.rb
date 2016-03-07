@@ -2,7 +2,7 @@ require_relative '../../lib/hsql/query'
 
 RSpec.describe HSQL::Query do
   let(:first_query) do
-    'INSERT INTO table_a (a, b) SELECT * FROM table_b'
+    'INSERT INTO "table_a" (a, b) SELECT * FROM "table_b"'
   end
   let(:sql) do
     ''"
@@ -20,9 +20,9 @@ RSpec.describe HSQL::Query do
     it 'properly understands the queries' do
       expect(parse.map(&:to_s)).to eql(
         [
-          'INSERT INTO table_a (a, b) SELECT * FROM table_b',
-          'SELECT count(*) FROM users',
-          'UPDATE factories SET x = y WHERE a = b',
+          'INSERT INTO "table_a" (a, b) SELECT * FROM "table_b"',
+          'SELECT count(*) FROM "users"',
+          'UPDATE "factories" SET x = "y" WHERE "a" = "b"',
         ],
       )
     end
